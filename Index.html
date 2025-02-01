@@ -29,14 +29,26 @@
       "https://www.profitablecpmrate.com/a6ufmsi0z?key=b096727727b1ade5c48bf6f5296ea176"
     ];
 
-    // Function to get a random website
-    function getRandomWebsite() {
-      const randomIndex = Math.floor(Math.random() * websites.length);
-      return websites[randomIndex];
+    // Function to get the next unvisited website
+    function getNextWebsite() {
+      let visited = JSON.parse(localStorage.getItem("visitedWebsites")) || [];
+
+      // Find the first unvisited website
+      for (let i = 0; i < websites.length; i++) {
+        if (!visited.includes(websites[i])) {
+          visited.push(websites[i]); // Mark as visited
+          localStorage.setItem("visitedWebsites", JSON.stringify(visited));
+          return websites[i]; // Return the next unvisited website
+        }
+      }
+
+      // If all websites are visited, reset and start over
+      localStorage.removeItem("visitedWebsites");
+      return websites[0]; // Restart from the first website
     }
 
-    // Redirect to a random website
-    window.location.href = getRandomWebsite();
+    // Redirect to the next website
+    window.location.href = getNextWebsite();
   </script>
 </body>
 </html>
